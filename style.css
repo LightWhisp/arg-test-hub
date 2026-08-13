@@ -54,31 +54,129 @@ section{padding:96px 0}
 .card a img:hover{filter:brightness(1.05)}
 .card .pad{padding:14px 16px}
 .card .pad b{font-weight:600;font-size:13.5px;letter-spacing:.02em}
-.frag{display:flex;align-items:center;gap:14px;background:var(--abyss);border:1px solid var(--edge);border-radius:10px;padding:14px 16px;margin-top:14px}
-.frag .dot{width:8px;height:8px;transform:rotate(45deg);background:var(--edge);flex:none}
-.frag.live .dot{background:var(--coral)}
-.frag audio{margin-left:auto;height:32px;max-width:46%}
-.frag .missing{margin-left:auto;color:var(--edge);font-size:12px;letter-spacing:.1em}
+.rec{background:var(--abyss);border:1px solid var(--edge);border-radius:10px;
+     padding:15px 18px;margin-top:14px;transition:border-color .5s}
+.rec.playing{border-color:var(--dim)}
+.rec.missing{opacity:.5}
+.rec-head{display:flex;align-items:center;gap:12px}
+.rec .dot{width:8px;height:8px;transform:rotate(45deg);background:var(--edge);flex:none;transition:background .5s}
+.rec.live .dot{background:var(--coral)}
+.rec.playing .dot{background:var(--bone)}
+.rec-id{color:var(--rust)}
+.rec-title{font-size:13.5px}
+.rec-state{margin-left:auto;color:var(--dim)}
+.rec-body{margin-top:14px}
+.rec.missing .rec-body{display:none}
 
-/* ---- the sealed ---- */
-.door{background:var(--abyss);border:1px solid var(--edge);border-radius:10px;padding:26px 26px 22px;margin-bottom:20px;transition:border-color .6s}
-.door.open{border-color:var(--violet)}
-.door .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
-.door .status{font-size:11px;letter-spacing:.18em;color:var(--coral)}
-.door.open .status{color:var(--violet)}
-.door .prompt{color:var(--bone);font-family:Georgia,serif;font-size:16.5px;font-style:italic;margin-bottom:18px}
+.transport{display:flex;align-items:center;gap:13px}
+.pp{width:34px;height:34px;flex:none;border:1px solid var(--edge);border-radius:50%;
+    background:none;color:var(--bone);font-size:11px;cursor:pointer;line-height:1}
+.pp:hover:not(:disabled),.pp:focus-visible{border-color:var(--dim)}
+.rec .time,.rec .dur{color:var(--dim);font-size:11px;min-width:34px}
+.bar{flex:1;height:3px;background:var(--edge);position:relative;cursor:pointer;border-radius:2px}
+.bar:focus-visible{outline:1px solid var(--violet);outline-offset:4px}
+.bar .fill{position:absolute;left:0;top:0;height:3px;width:0;background:var(--dim);border-radius:2px}
+.rec.playing .bar .fill{background:var(--bone)}
+.rec.reversed .bar .fill{background:var(--rust)}
+
+.tools{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.vol{display:flex;align-items:center;gap:8px}
+.vol .mono{color:var(--dim)}
+.rec input[type=range]{width:88px;accent-color:var(--dim);background:none}
+.seg{display:flex;border:1px solid var(--edge);border-radius:6px;overflow:hidden}
+.seg button{background:none;border:none;color:var(--dim);font:inherit;font-size:11px;
+            padding:5px 9px;cursor:pointer;letter-spacing:.04em}
+.seg button+button{border-left:1px solid var(--edge)}
+.seg button.on{background:#15151E;color:var(--bone)}
+.tg{background:none;border:1px solid var(--edge);border-radius:6px;color:var(--dim);
+    font:inherit;font-size:11px;padding:5px 11px;cursor:pointer;letter-spacing:.06em}
+.tg:hover:not(:disabled),.tg:focus-visible{border-color:var(--dim)}
+.tg.on{border-color:var(--bone);color:var(--bone)}
+.rec .rev.on{border-color:var(--rust);color:var(--rust)}
+.rec button:disabled,.rec input:disabled{opacity:.35;cursor:default}
+
+.cue{min-height:22px;margin-top:14px;font-family:Georgia,serif;font-style:italic;
+     font-size:13.5px;color:var(--dim);text-align:center}
+.rec.cc-on .cue{color:#B08A85}
+@media (max-width:560px){ .tools{gap:10px} .rec input[type=range]{width:70px} }
+
+/* ---- the sealed: five states ---------------------------------------
+   State is carried by the STATUS TEXT first and colour second — never by
+   colour alone. coral/violet are confusable for a real slice of players. */
+.door{background:var(--abyss);border:1px solid var(--edge);border-radius:10px;
+      padding:24px 26px 20px;margin-bottom:16px;transition:border-color .6s}
+.door .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:5px}
+.door .id{color:var(--bone);font-size:12px}
+.door .status{font-size:10.5px;letter-spacing:.2em;color:var(--dim)}
+.door .prov{font-family:"SFMono-Regular",Consolas,monospace;font-size:10.5px;
+            color:#4A4A5E;letter-spacing:.06em;margin-bottom:14px}
+.door .prompt{color:var(--bone);font-family:Georgia,serif;font-size:16.5px;
+              font-style:italic;margin-bottom:18px}
+
 .speak{display:flex;align-items:center;border-bottom:1px solid var(--edge);max-width:420px}
-.speak input{flex:1;background:none;border:none;outline:none;color:var(--bone);font:inherit;padding:8px 2px;letter-spacing:.12em}
+.speak input{flex:1;background:none;border:none;outline:none;color:var(--bone);
+             font:inherit;padding:8px 2px;letter-spacing:.12em}
 .speak input::placeholder{color:var(--edge);letter-spacing:.3em}
 .speak input:focus{caret-color:var(--violet)}
 .speak:focus-within{border-color:var(--dim)}
-.whisper{min-height:22px;margin-top:10px;font-size:12.5px;letter-spacing:.12em;color:var(--dim);opacity:0;transition:opacity .5s}
+
+.transcript{display:none}
+.tbtn{background:none;border:1px solid var(--edge);border-radius:6px;padding:8px 15px;
+      font:inherit;font-size:12px;letter-spacing:.1em;color:var(--dim);cursor:pointer}
+.tbtn:hover,.tbtn:focus{border-color:var(--dim);color:var(--bone)}
+.fine{font-size:11px;color:#3E3E50;margin-top:9px;letter-spacing:.04em}
+
+.whisper{min-height:22px;margin-top:10px;font-size:12.5px;letter-spacing:.12em;
+         color:var(--dim);opacity:0;transition:opacity .5s}
 .whisper.show{opacity:1}
-.payload{display:none;margin-top:22px;padding-top:22px;border-top:1px solid var(--edge)}
-.door.open .payload{display:block;animation:arrive 1.4s ease}
+
+.payload,.blank{display:none}
+.payload{margin-top:22px;padding-top:22px;border-top:1px solid var(--edge)}
 .payload h3{font-size:19px;letter-spacing:.2em;margin-bottom:10px}
 .payload p{margin-bottom:12px;color:#CFCBBE}
-.payload .embed-slot{border:1px dashed var(--edge);border-radius:8px;padding:18px;color:var(--dim);font-size:12.5px}
+.payload .embed-slot{border:1px dashed var(--edge);border-radius:8px;padding:18px;
+                     color:var(--dim);font-size:12.5px}
+
+/* her margins ride along only with the transcription */
+.payload .margin{display:none}
+.door.via-transcript .payload .margin{display:block;margin-top:18px;padding-left:14px;
+      border-left:2px solid var(--edge)}
+.payload .margin p{color:var(--dim);font-size:13.5px}
+.mlab{font-family:"SFMono-Regular",Consolas,monospace;font-size:10.5px;
+      letter-spacing:.18em;color:var(--rust);display:block;margin-bottom:8px;opacity:.85}
+
+/* --- held --- */
+.door[data-state="held"] .status{color:var(--coral)}
+
+/* --- transcribed: input stays live, the button is an alternative --- */
+.door[data-state="transcribed"] .transcript{display:block;margin-top:18px}
+
+/* --- read --- */
+.door[data-state="read"]{border-color:var(--violet)}
+.door[data-state="read"] .status{color:var(--violet)}
+.door[data-state="read"] .speak,
+.door[data-state="read"] .transcript{display:none}
+.door[data-state="read"] .payload{display:block;animation:arrive 1.4s ease}
+
+/* --- emptied: solved, and there is nothing behind it --- */
+.door[data-state="emptied"]{border-color:rgba(224,106,60,.32)}
+.door[data-state="emptied"] .status{color:var(--coral)}
+.door[data-state="emptied"] .speak,
+.door[data-state="emptied"] .transcript{display:none}
+.door[data-state="emptied"] .blank{display:block;padding:26px 0 12px;text-align:center;
+      animation:arrive 1.8s ease}
+.blank .bline{height:1px;background:var(--edge);margin-bottom:16px}
+.blank .btxt{font-size:11.5px;letter-spacing:.28em;color:#3E3E50}
+
+/* --- not indexed: the number exists, nothing sits behind it --- */
+.door[data-state="not-indexed"]{background:transparent;border-style:dashed;
+      border-color:#16161F;padding:16px 26px}
+.door[data-state="not-indexed"] .id{color:#33333F}
+.door[data-state="not-indexed"] .status{color:#26262F}
+.door[data-state="not-indexed"] .speak,
+.door[data-state="not-indexed"] .transcript,
+.door[data-state="not-indexed"] .prov{display:none}
+
 .shake{animation:shake .4s}
 @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 
@@ -99,3 +197,293 @@ footer{text-align:center;padding:60px 0 80px;color:var(--edge);font-size:12px;le
   .frag{flex-wrap:wrap}
   .frag audio{max-width:100%;width:100%}
 }
+
+/* ---- hers: catalogue entries, margins, the bench --------------------- */
+.door .id{color:var(--rust)}
+.door[data-state="not-indexed"] .id{color:#4A2320}
+.door.via-transcript .payload .margin{border-left-color:var(--rust)}
+.payload .margin p{color:#B08A85}
+
+#bench{background:var(--abyss);border:1px solid var(--edge);border-radius:10px;padding:24px 26px 22px}
+#bench.resolved{border-color:var(--rust)}
+.bench-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.bench-head .mono{color:var(--rust)}
+.bench-state{color:var(--dim)}
+#bench.resolved .bench-state{color:var(--rust)}
+.bench-hint{color:var(--dim);font-size:12.5px;margin-bottom:18px}
+.cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));gap:8px;margin-bottom:22px}
+.cell{background:var(--void);border:1px solid var(--edge);border-radius:7px;padding:10px 4px 6px;
+      cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;
+      font:inherit;transition:border-color .2s,background .2s}
+.cell:hover,.cell:focus-visible{border-color:var(--dim)}
+.cell.picked{border-color:var(--rust);background:#160B0A}
+.cell .gl{width:24px;height:32px;fill:none;stroke:var(--bone);stroke-width:2.2;
+          stroke-linecap:round;stroke-linejoin:round}
+.cell .cl{font-family:"SFMono-Regular",Consolas,monospace;font-size:11px;
+          letter-spacing:.1em;color:var(--dim)}
+.cell.picked .cl{color:var(--rust)}
+#bench.resolved .cell{cursor:default;border-color:#2A1614}
+
+.readout{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;line-height:2;
+         letter-spacing:.06em;color:var(--dim);border-top:1px solid var(--edge);
+         padding-top:20px;word-spacing:.35em;transition:color .8s}
+#bench.resolved .readout{color:var(--bone)}
+.bench-note{margin-top:20px}
+.bench-note p{color:#B08A85;font-size:13.5px;margin-bottom:9px}
+@media (max-width:560px){ .cells{grid-template-columns:repeat(auto-fit,minmax(48px,1fr))} }
+
+/* ============================================================
+   ADDED — her colour token, the index, the two new benches,
+   the hidden sub-audio, and the last door's blackout.
+   ============================================================ */
+
+/* --rust was referenced eleven times and never defined, so every rule
+   using it computed to nothing. Deeper and cooler than coral on purpose:
+   coral and violet already carry state, and state must never be carried
+   by colour alone. This is HER colour and nothing else uses it. */
+:root{ --rust:#C4453C; }
+
+section.hidden{display:none}
+
+/* ---- the index: a number log, and a modal that grows out of it ------ */
+#catalogue{background:var(--abyss);border:1px solid var(--edge);border-radius:10px;padding:24px 26px 22px}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.cat-head .mono{color:var(--rust)}
+.cat-count{color:var(--dim)}
+.cat-search{display:flex;border-bottom:1px solid var(--edge);margin-bottom:24px;max-width:340px}
+.cat-search input{flex:1;background:none;border:none;outline:none;color:var(--bone);
+  font:inherit;padding:8px 2px;letter-spacing:.1em}
+.cat-search input::placeholder{color:var(--edge);letter-spacing:.28em}
+.cat-search:focus-within{border-color:var(--dim)}
+
+/* the wall. most of it is dark, and that is the information. */
+.cat-log{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:4px}
+.cat-num{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:11.5px;
+  letter-spacing:.1em;text-align:center;padding:9px 2px;border-radius:5px;
+  border:1px solid transparent;background:none;font-weight:normal}
+.cat-num.absent{color:#25252F;cursor:default;user-select:none}
+button.cat-num{color:var(--rust);border-color:#2A1614;background:#100A0A;cursor:pointer;
+  transition:border-color .25s,background .25s,color .25s}
+button.cat-num:hover,button.cat-num:focus-visible{border-color:var(--rust);background:#1A0D0C;color:#E4675E}
+/* held is marked, because a number you can see is held is worth working on.
+   the mark is a bracket, not a colour — colour alone is never a state here. */
+button.cat-num.held{color:var(--coral);border-color:#2A1C14;background:transparent}
+button.cat-num.held::before{content:"["}
+button.cat-num.held::after{content:"]"}
+.cat-foot:empty{display:none}
+.cat-foot{margin-top:18px;color:var(--dim);letter-spacing:.16em}
+
+.cat-modal{position:fixed;inset:0;z-index:30;display:flex;align-items:center;
+  justify-content:center;padding:24px}
+.cat-scrim{position:absolute;inset:0;background:rgba(3,3,7,.82);opacity:0;
+  transition:opacity .3s ease}
+.cat-modal.in .cat-scrim{opacity:1}
+.cat-card{position:relative;width:100%;max-width:560px;max-height:80vh;overflow-y:auto;
+  background:var(--abyss);border:1px solid var(--rust);border-radius:10px;
+  padding:22px 26px 26px;opacity:0;
+  transition:transform .2s ease,opacity .2s ease}
+.cat-modal.in .cat-card{opacity:1}
+
+/* ---- the record does not fade in, it RESOLVES ------------------------
+   A read that finally returned, rendering badly on the way. Three things
+   running together, none of them duplicating the DOM:
+
+     cat-tear    horizontal slices go missing and snap back (clip-path)
+     cat-split   chromatic fringe in her rust and his violet, pulled to 0
+     .cat-tear   one bright band sweeping down the card, once
+
+   The number in the header tumbles and locks in JS — see scramble().
+   All of it is skipped under prefers-reduced-motion, and the whole effect
+   is one config flag (MOTION.glitch) away from off. */
+@keyframes cat-tear{
+  0%  {opacity:0; transform:scale(.94) translateY(8px); clip-path:inset(48% 0 48% 0)}
+  8%  {opacity:1; transform:scale(.95) translateX(-10px); clip-path:inset(44% 0 40% 0)}
+  16% {transform:scale(.96) translateX(8px);  clip-path:inset(12% 0 66% 0)}
+  24% {transform:scale(.96) translateX(-6px); clip-path:inset(68% 0 8% 0)}
+  32% {transform:scale(.98) translateX(5px);  clip-path:inset(4% 0 52% 0)}
+  40% {transform:scale(.99) translateX(-3px); clip-path:inset(0 0 0 0)}
+  52% {transform:none; clip-path:inset(34% 0 46% 0)}
+  58% {transform:translateX(4px); clip-path:inset(0 0 0 0)}
+  72% {transform:none; clip-path:inset(74% 0 14% 0)}
+  78% {clip-path:inset(0 0 0 0)}
+  100%{opacity:1; transform:none; clip-path:inset(0 0 0 0)}
+}
+/* the fringe is a filter, so it costs one composited layer and no extra
+   markup. rust leads, violet trails — the two colours already on the page. */
+@keyframes cat-split{
+  0%  {filter:drop-shadow(4px 0 0 rgba(196,69,60,.95)) drop-shadow(-4px 0 0 rgba(156,143,232,.85))}
+  30% {filter:drop-shadow(-3px 0 0 rgba(196,69,60,.8)) drop-shadow(3px 0 0 rgba(156,143,232,.7))}
+  55% {filter:drop-shadow(2px 0 0 rgba(196,69,60,.6)) drop-shadow(-2px 0 0 rgba(156,143,232,.5))}
+  80% {filter:drop-shadow(1px 0 0 rgba(196,69,60,.25)) drop-shadow(-1px 0 0 rgba(156,143,232,.2))}
+  100%{filter:none}
+}
+.cat-modal.glitching .cat-card{
+  animation:cat-tear 560ms steps(1,end) both, cat-split 620ms linear both;
+}
+/* a scanline pass, only while it is resolving */
+.cat-modal.glitching .cat-card::after{
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:10px;
+  background:repeating-linear-gradient(to bottom,
+    rgba(233,228,214,.05) 0 1px, transparent 1px 3px);
+  animation:cat-scan 560ms linear both;
+}
+@keyframes cat-scan{0%,60%{opacity:.9}100%{opacity:0}}
+
+/* the band that sweeps down it once */
+.cat-tear{position:absolute; left:0; right:0; height:2px; top:0; pointer-events:none;
+  opacity:0; background:linear-gradient(90deg,
+    transparent, rgba(196,69,60,.85) 18%, rgba(233,228,214,.95) 50%,
+    rgba(156,143,232,.85) 82%, transparent);
+  mix-blend-mode:screen}
+.cat-modal.glitching .cat-tear{animation:cat-band 560ms cubic-bezier(.4,0,.7,1) both}
+@keyframes cat-band{
+  0%  {opacity:0; top:0}
+  10% {opacity:1}
+  70% {opacity:.7}
+  100%{opacity:0; top:100%}
+}
+
+/* going out is the same failure, faster and in reverse */
+@keyframes cat-untear{
+  0%  {opacity:1; clip-path:inset(0 0 0 0)}
+  30% {opacity:1; transform:translateX(6px); clip-path:inset(28% 0 40% 0)}
+  60% {opacity:.7; transform:translateX(-8px); clip-path:inset(58% 0 22% 0)}
+  100%{opacity:0; transform:scale(.96); clip-path:inset(50% 0 50% 0)}
+}
+.cat-modal.closing .cat-card{animation:cat-untear 240ms steps(1,end) both}
+.cat-card:focus{outline:none}
+.cat-card-head{display:flex;justify-content:space-between;align-items:baseline;
+  gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--edge)}
+.cat-card-head .mono{color:var(--rust);font-size:12px}
+.cat-close{background:none;border:none;color:var(--dim);font-size:20px;line-height:1;
+  cursor:pointer;padding:0 4px;font-family:inherit}
+.cat-close:hover,.cat-close:focus-visible{color:var(--bone)}
+.cat-text{color:#CFCBBE;font-size:14.5px}
+.cat-links{margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap}
+.cat-jump{background:none;border:1px solid var(--edge);border-radius:5px;
+  font-family:"SFMono-Regular",Consolas,monospace;font-size:10.5px;letter-spacing:.1em;
+  color:#6A6A80;padding:4px 9px;cursor:pointer}
+.cat-jump:hover,.cat-jump:focus-visible{border-color:var(--rust);color:var(--rust)}
+.cat-add{color:var(--dim);font-size:13.5px;margin-top:14px;padding-left:14px;
+  border-left:1px solid var(--edge)}
+.cat-add .mono{display:block;color:#4A4A5E;margin-bottom:4px}
+.rec-state-line{color:var(--coral);letter-spacing:.2em;padding:8px 0}
+
+/* Lord-X in the margins — built, wired, and off unless CFG.MARGINS */
+.cat-margin{display:none}
+.cat-modal.margins-on .cat-margin{display:block;margin-top:18px;padding-left:14px;
+  border-left:2px solid var(--rust)}
+.cat-margin p{color:#B08A85;font-size:13.5px;letter-spacing:.02em}
+
+/* ---- 2.A the order ------------------------------------------------- */
+#order{background:var(--abyss);border:1px solid var(--edge);border-radius:10px;padding:24px 26px 22px}
+.ord-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.ord-head .mono{color:var(--rust)}
+.ord-state{color:var(--dim)}
+.ord-hint{color:var(--dim);font-size:12.5px;margin-bottom:18px}
+.ord-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-bottom:20px}
+.ord-slot{background:var(--void);border:1px solid var(--edge);border-radius:7px;
+  padding:12px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;
+  font:inherit;cursor:pointer;transition:border-color .2s,background .2s}
+.ord-slot:hover,.ord-slot:focus-visible{border-color:var(--dim)}
+.ord-slot.picked{border-color:var(--rust);background:#160B0A}
+.ord-slot.empty{border-style:dashed;border-color:#16161F;cursor:default}
+.ord-slot .og{font-family:Georgia,serif;font-size:22px;color:var(--bone);line-height:1}
+.ord-slot.empty .og{color:#26262F}
+.ord-slot .on{color:var(--dim);font-size:10.5px;letter-spacing:.06em;text-align:center}
+.ord-slot.empty .on{color:#33333F}
+.ord-slot.picked .on{color:var(--rust)}
+.ord-readout{border-top:1px solid var(--edge);padding-top:20px;font-size:16px;
+  letter-spacing:.5em;color:var(--dim);text-align:center}
+
+/* ---- 2.D the filing ------------------------------------------------ */
+#classify{background:var(--abyss);border:1px solid var(--edge);border-radius:10px;padding:24px 26px 22px}
+.cls-head{margin-bottom:12px}
+.cls-head .mono{color:var(--rust)}
+.cls-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;min-height:38px}
+.cls-boxes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.cls-box{border:1px solid var(--edge);border-radius:8px;padding:14px 16px 16px;background:var(--void)}
+.cls-box-head{display:flex;justify-content:space-between;align-items:baseline;
+  gap:10px;margin-bottom:12px}
+.cls-box-head .mono{color:var(--bone)}
+.cls-rule{color:#4A4A5E;font-size:10.5px}
+.cls-drop{display:flex;flex-direction:column;gap:7px;min-height:44px}
+.cls-chip{background:var(--abyss);border:1px solid var(--edge);border-radius:6px;
+  padding:8px 12px;font:inherit;color:var(--bone);cursor:pointer;text-align:left;
+  display:flex;flex-direction:column;gap:4px;transition:border-color .2s}
+.cls-chip:hover,.cls-chip:focus-visible{border-color:var(--dim)}
+.cls-name{font-size:13px}
+.cls-fields{color:#4A4A5E;font-size:10px;letter-spacing:.04em}
+/* the flag is TEXT first. a colour-only tell would be unreadable for a
+   real slice of players, and this one is load-bearing. */
+.cls-chip.malformed{border-color:rgba(196,69,60,.5)}
+.cls-flag{color:var(--rust);font-size:10px;letter-spacing:.14em}
+.cls-empty{color:#33333F;font-size:10.5px;letter-spacing:.16em;padding:4px 0}
+.cls-note{margin-top:22px}
+.cls-note p{color:#B08A85;font-size:13.5px}
+
+/* ---- the sub-audio, once found, kept ------------------------------- */
+.sub:empty{display:none}
+.sub{margin-top:18px;padding-top:16px;border-top:1px solid var(--edge);
+  animation:arrive 1.6s ease}
+.sub-head{display:flex;gap:12px;align-items:baseline;margin-bottom:6px}
+.sub-head .mono{color:var(--rust)}
+.sub-title{font-size:13.5px}
+.sub-note{color:var(--dim);font-size:13px;margin-bottom:10px}
+.sub audio{width:100%;filter:invert(.9) hue-rotate(180deg) saturate(.2)}
+.rec.has-sub{border-color:rgba(196,69,60,.4)}
+
+/* ---- 4.2 the last door: the world strips away ---------------------- */
+body.blackout{background:#000}
+body.blackout main,body.blackout footer,body.blackout #field,
+body.blackout::before{display:none!important}
+#black{position:fixed;inset:0;z-index:20;background:#000;display:flex;
+  align-items:center;justify-content:center;padding:24px;
+  animation:strip 2.2s ease both}
+#black.instant{animation:none}
+@keyframes strip{from{opacity:0}to{opacity:1}}
+.bwrap{width:100%;max-width:520px;text-align:center}
+.bq{font-family:Georgia,serif;font-style:italic;font-size:21px;color:var(--bone);
+  letter-spacing:.06em;margin-bottom:34px}
+.bspeak{border-bottom:1px solid #1A1A1A;max-width:320px;margin:0 auto}
+.bspeak input{width:100%;background:none;border:none;outline:none;color:var(--bone);
+  font:inherit;text-align:center;padding:10px 2px;letter-spacing:.34em}
+.bspeak:focus-within{border-color:#3A3A3A}
+.bhint:empty{display:none}
+.bhint{margin-top:22px;color:#2E2E2E;font-size:12px;letter-spacing:.14em}
+.bpay:empty{display:none}
+.bpay{margin-top:8px;animation:arrive 2.4s ease}
+.bpay p{color:#CFCBBE;margin-bottom:12px}
+#black.answered .bq{color:var(--dim);font-size:15px;margin-bottom:26px}
+
+@media (max-width:560px){
+  #catalogue,#order,#classify{padding:20px 18px}
+  .ord-slots{grid-template-columns:repeat(auto-fit,minmax(80px,1fr))}
+  .ord-readout{letter-spacing:.3em;font-size:14px}
+}
+
+@media (max-width:560px){
+  .cat-log{grid-template-columns:repeat(auto-fill,minmax(48px,1fr))}
+  .cat-card{padding:18px 18px 22px;max-height:86vh}
+}
+@media (prefers-reduced-motion:reduce){
+  .cat-card,.cat-scrim{transition:none}
+  .cat-modal .cat-card,.cat-modal .cat-scrim{opacity:1}
+  /* belt and braces: script.js already refuses to add .glitching under
+     reduced motion, but if the class ever arrives some other way, the
+     animation must still not run. Nobody gets a strobing card. */
+  .cat-modal.glitching .cat-card,
+  .cat-modal.glitching .cat-card::after,
+  .cat-modal.glitching .cat-tear,
+  .cat-modal.closing .cat-card{animation:none}
+  .cat-tear{display:none}
+}
+
+/* ---- a sealed recording: the file is right there and useless ---------
+   Distinct from .missing on purpose. "not yet recovered" means there is
+   no file; "sealed" means the file exists, is downloadable, and does not
+   open. A solver is entitled to tell those apart. */
+.rec.locked{opacity:.72;border-style:dashed;border-color:#2A1C14}
+.rec.locked .dot{background:var(--coral)}
+.rec.locked .rec-state{color:var(--coral)}
+.rec.locked .rec-body{display:none}
